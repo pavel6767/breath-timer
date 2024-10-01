@@ -2,11 +2,13 @@ import { useContext } from 'react'
 import { StateContext } from '../context'
 import { useNavigate } from 'react-router-dom'
 import routes from '../config/routes'
+import { initialSession } from '../utils/state'
 
 export default () => {
-  const { state, setState } = useContext(StateContext)
+  const { setSession } = useContext(StateContext)
   const navigate = useNavigate()
   const handleClick = () => {
+    setSession({ ...initialSession })
     navigate(routes.TIMER.path)
   }
   return (

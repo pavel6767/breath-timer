@@ -1,17 +1,28 @@
 import { useNavigate } from 'react-router-dom'
 import routes from '../config/routes'
+import { StateContext } from '../context'
+import { useContext } from 'react'
+import { initialSession } from '../utils/state'
 
 export default () => {
   const navigate = useNavigate()
-  const handleClick = (route) => {
-    console.log(':P::', { route });
-    navigate(route.path)
+  const { session, setSession } = useContext(StateContext)
+  const handleClick = () => {
+    navigate(routes.HOME.path)
+  }
+  
+  const handleTimerClick = () => {
+    if (!!session.done) setSession({ ...initialSession })
+    navigate(routes.TIMER.path)
   }
   return (
     <div id="finished"> 
       Finished
-      <button onClick={handleClick.bind(null,routes.TIMER)}>Restart</button>
-      <button onClick={handleClick.bind(null,routes.HOME)}>Home</button>
+      <pre>{JSON.stringify(session)}</pre>
+      <button onClick={handleTimerClick}>
+        {session.done ? 'Restart' : 'Continue'}
+      </button>
+      <button onClick={handleClick}>Home</button>
     </div>
   )
 }
