@@ -1,10 +1,10 @@
-import { useContext } from 'react'
+import React, { useContext } from 'react'
 import { StateContext } from '../context'
 import { useNavigate } from 'react-router-dom'
 import routes from '../config/routes'
 import { initialSession } from '../utils/state'
 
-export default () => {
+const Home: React.FC = () => {
   const { setSession } = useContext(StateContext)
   const navigate = useNavigate()
   const handleClick = () => {
@@ -21,3 +21,5 @@ export default () => {
     </div>
   )
 }
+
+export default Home
