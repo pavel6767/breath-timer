@@ -1,0 +1,26 @@
+#animation-max {
+  width: 150px;
+  height: 150px;
+  border: 1px solid black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+#animation-min {
+  width: 100px;
+  height: 100px;
+  border: 1px solid black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+#animation {
+  width: 100px;
+  height: 100px;
+  background-color: lightblue;
+  border-radius: 50%;
+}
