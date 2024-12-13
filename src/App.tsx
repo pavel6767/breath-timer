@@ -1,7 +1,8 @@
 import { Routes, Route } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { StateContext } from "./context";
+import { IProgressContext, IProgressValue, ProgressContext, initialState } from "./context/progress";
 
 import "./App.css";
 import routes from "./config/routes";
@@ -14,16 +15,28 @@ function App() {
     intervals: [4, 7, 8, 0],
     cycles: 2,
   });
+  const [progress, setProgress] = useState<IProgressValue>(initialState);
 
-  const contextValue: IMeditationState = { session, setSession, goal, setGoal };
+  const sessionCtxValue: IMeditationState = { session, setSession, goal, setGoal };
+  const progressCtxValue: IProgressContext = { progress, setProgress };
+  
+  useEffect(() => {
+    setProgress({
+      progress:
+        session.cycles * goal.intervals.reduce((acc, curr) => acc + curr, 0),
+      total: goal.cycles * goal.intervals.reduce((acc, curr) => acc + curr, 0),
+    });
+  }, [goal.intervals, goal.cycles, session.cycles]);
 
   return (
-    <StateContext.Provider value={contextValue}>
-      <Routes>
-        {Object.values(routes).map((r) => (
-          <Route key={r.path} path={r.path} element={<r.Element />} />
-        ))}
-      </Routes>
+    <StateContext.Provider value={sessionCtxValue}>
+      <ProgressContext.Provider value={progressCtxValue}>
+        <Routes>
+          {Object.values(routes).map((r) => (
+            <Route key={r.path} path={r.path} element={<r.Element />} />
+          ))}
+        </Routes>
+      </ProgressContext.Provider>
     </StateContext.Provider>
   );
 }

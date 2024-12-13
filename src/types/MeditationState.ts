@@ -3,7 +3,7 @@ import React from "react";
 export interface ISession {
   count: number;
   phaseIndex: number;
-  cycle: number;
+  cycles: number;
   done: boolean;
 }
 

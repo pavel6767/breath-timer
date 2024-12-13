@@ -20,7 +20,7 @@ const Timer: React.FC = () => {
         {getPhaseByIndex(session.phaseIndex).label}: {session.count}/{goal.intervals[session.phaseIndex]}
       </p>
       <p>
-        breaths so far: {session.cycle}/{goal.cycles}
+        breaths so far: {session.cycles}/{goal.cycles}
       </p>
 
       <button onClick={() => handleClick(false)}>Pause</button>

@@ -22,7 +22,7 @@ export const useTimerLogic = () => {
   useEffect(() => {
     liveRef.current = setInterval(() => {
       setSession((state) => {
-        if (state.cycle === goal.cycles) {
+        if (state.cycles === goal.cycles) {
           liveRef.current && clearInterval(liveRef.current);
           handleClick(true);
         }
@@ -34,14 +34,14 @@ export const useTimerLogic = () => {
           newState.phaseIndex++;
           while (goal.intervals[newState.phaseIndex] === 0) {
             if (newState.phaseIndex >= goal.intervals.length) {
-              newState.cycle++;
+              newState.cycles++;
               newState.phaseIndex = 0;
             }
             newState.phaseIndex++;
           }
           if (newState.phaseIndex === goal.intervals.length) {
             newState.phaseIndex = 0;
-            newState.cycle++;
+            newState.cycles++;
           }
         }
         return newState;
