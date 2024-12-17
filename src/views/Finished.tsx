@@ -2,21 +2,20 @@ import React, { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import routes from '../config/routes'
-import { StateContext } from '../context'
-import { initialSession } from '../utils/state'
-import { ProgressContext } from '../context/progress'
+import { initialState, SessionContext } from '../context/Session'
+import { ProgressContext } from '../context/Progress'
 import { formatSecToTime } from '../utils'
 
 const Finished: React.FC = () => {
   const navigate = useNavigate()
-  const { session, setSession } = useContext(StateContext)
+  const { session, setSession } = useContext(SessionContext)
   const { progress } = useContext(ProgressContext);
   const handleClick = () => {
     navigate(routes.HOME.path)
   }
   
   const handleTimerClick = () => {
-    if (session.done) setSession({ ...initialSession })
+    if (session.done) setSession({ ...initialState })
     navigate(routes.TIMER.path)
   }
   return (

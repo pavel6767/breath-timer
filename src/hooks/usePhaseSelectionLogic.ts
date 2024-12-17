@@ -1,11 +1,12 @@
 import { useContext } from "react";
-import { StateContext } from "../context";
+import { GoalContext } from "../context/Goal";
+
 
 export const usePhaseSelectionLogic = () => {
   const {
     goal: { intervals, cycles },
     setGoal,
-  } = useContext(StateContext);
+  } = useContext(GoalContext);
 
   const handlePresetClick = (newGoals: number[]) => {
     setGoal((prevGoal) => ({ ...prevGoal, intervals: newGoals }));

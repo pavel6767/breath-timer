@@ -1,9 +1,13 @@
 import { useContext, useEffect } from "react";
-import { StateContext } from "../context";
+
+import { SessionContext } from "../context/Session";
+import { GoalContext } from "../context/Goal";
+
 import { getPhaseByIndex } from "../utils/phases";
 
 export const useBreathUXLogic = () => {
-  const { session, goal } = useContext(StateContext);
+  const { session } = useContext(SessionContext);
+  const { goal } = useContext(GoalContext);
 
   
   const createAnimation = (animationChanges: string, phaseIndex: number) => {

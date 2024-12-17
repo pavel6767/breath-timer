@@ -1,18 +1,20 @@
 import { useNavigate } from "react-router-dom";
 import { useContext, useEffect, useRef } from "react";
-import { StateContext } from "../context";
-import { ISession } from "../types";
+
 import routes from "../config/routes";
+import { GoalContext } from "../context/Goal";
+import { SessionContext } from "../context/Session";
 
 export const useTimerLogic = () => {
   const navigate = useNavigate();
-  const { session, setSession, goal } = useContext(StateContext);
+  const { session, setSession } = useContext(SessionContext);
+  const { goal } = useContext(GoalContext);
   const liveRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleClick = (done: boolean) => {
-    setSession((state: ISession) => ({
+    setSession((state) => ({
       ...state,
-      count: 0,
+      count: -3,
       phaseIndex: 0,
       done: done,
     }));
@@ -29,7 +31,7 @@ export const useTimerLogic = () => {
 
         const newState = { ...state };
         newState.count++;
-        if (newState.count > goal.intervals[newState.phaseIndex]) {
+        if (newState.count === goal.intervals[newState.phaseIndex]) {
           newState.count = 0;
           newState.phaseIndex++;
           while (goal.intervals[newState.phaseIndex] === 0) {
