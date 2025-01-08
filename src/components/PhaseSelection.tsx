@@ -1,6 +1,25 @@
-import React, { FormEventHandler } from "react";
+import React, { FormEventHandler, useCallback } from "react";
+import {
+  Box,
+  Button,
+  FormControl,
+  FormLabel,
+  Input,
+  Heading,
+  Text,
+  HStack,
+  VStack,
+  SimpleGrid,
+  Divider,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
+} from "@chakra-ui/react";
+
 import { getPhaseByIndex } from "../utils/phases";
-import { usePhaseSelectionLogic } from "../hooks/usePhaseSelectionLogic";
+import { usePhaseSelection } from "../hooks/components/usePhaseSelection";
 import { presets } from "../utils/presets";
 
 interface IPhaseSelectionProps {
@@ -11,72 +30,110 @@ const PhaseSelection: React.FC<IPhaseSelectionProps> = ({ onSubmit }) => {
   const {
     context: { intervals, cycles },
     callbacks: { handlePhaseChange, handlePresetClick, handleCycleChange },
-  } = usePhaseSelectionLogic();
+  } = usePhaseSelection();
 
   return (
-    <>
-      <form onSubmit={onSubmit}>
-        <fieldset>
-          <legend>Phase Selection</legend>
-          <fieldset>
-            <legend>Presets</legend>
+    <Box as="form" onSubmit={onSubmit} maxW="800px" mx="auto" p={6}>
+      <VStack spacing={8}>
+        <Heading size="lg" color="blue.600">
+          Breathing Exercise Setup
+        </Heading>
+
+        <VStack spacing={6} w="100%">
+          <Heading size="md">Presets</Heading>
+          <SimpleGrid columns={[1, 2]} spacing={4} w="100%">
             {presets.map((set, index) => (
-              <section
+              <Box
                 key={`preset-${index}`}
-                style={{ border: "1px solid black", margin: "10px" }}
-                aria-labelledby={`preset-title-${index}`}
+                borderRadius="lg"
+                boxShadow="md"
+                bg="white"
+                p={4}
+                _hover={{ boxShadow: "lg", transform: "translateY(-2px)" }}
+                transition="all 0.2s"
               >
-                <h3 id={`preset-title-${index}`}>{set[0]}</h3>
-                <span>
-                  {set[1].map((phase, inx) => (
-                    <span key={`phase-${index}-${inx}`}>
-                      {getPhaseByIndex(inx).label}: {phase}
-                    </span>
-                  ))}
-                </span>
-                <button type="button" onClick={() => handlePresetClick(set[1])}>
-                  Select
-                </button>
-              </section>
+                <VStack spacing={3}>
+                  <Heading size="sm" color="blue.500">
+                    {set[0]}
+                  </Heading>
+                  <HStack spacing={4} fontSize="sm" color="gray.600">
+                    {set[1].map((phase, inx) => (
+                      <Text key={`phase-${index}-${inx}`}>
+                        {getPhaseByIndex(inx).label}: {phase}
+                      </Text>
+                    ))}
+                  </HStack>
+                  <Button
+                    colorScheme="blue"
+                    variant="outline"
+                    onClick={() => handlePresetClick(set[1])}
+                  >
+                    Select
+                  </Button>
+                </VStack>
+              </Box>
             ))}
-          </fieldset>
-          <fieldset>
-            <legend>Custom</legend>
-            {intervals.map((duration, index) => (
-              <div key={index}>
-                <label htmlFor={`phase-${index}`}>
-                  {getPhaseByIndex(index).label}:
-                </label>
-                <input
-                  id={`phase-${index}`}
-                  type="number"
-                  min={index % 2 === 0 ? 1 : 0}
-                  max={12}
-                  value={duration}
-                  data-index={index}
-                  onChange={handlePhaseChange}
-                />
-              </div>
-            ))}
-          </fieldset>
-        </fieldset>
-        <fieldset>
-          <legend>Cycles</legend>
-          <div>
-            <label htmlFor="cycles">Number of Cycles:</label>
-            <input
-              id="cycles"
-              type="number"
+          </SimpleGrid>
+
+          <Divider />
+
+          <VStack spacing={6} w="100%">
+            <Heading size="md">Custom Timing</Heading>
+            <SimpleGrid columns={[1, 2, 4]} spacing={4} w="100%">
+              {intervals.map((duration, index) => (
+                <FormControl key={index}>
+                  <FormLabel color="gray.700">
+                    {getPhaseByIndex(index).label}
+                  </FormLabel>
+                  <NumberInput
+                    min={index % 2 === 0 ? 1 : 0}
+                    max={12}
+                    value={duration}
+                    onChange={(value) =>
+                      handlePhaseChange(value, index)}
+                  >
+                    <NumberInputField />
+                    <NumberInputStepper>
+                      <NumberIncrementStepper />
+                      <NumberDecrementStepper />
+                    </NumberInputStepper>
+                  </NumberInput>
+                </FormControl>
+              ))}
+            </SimpleGrid>
+          </VStack>
+
+          <Divider />
+
+          <FormControl maxW="200px">
+            <FormLabel color="gray.700">Number of Cycles</FormLabel>
+            <NumberInput
               min={1}
               max={50}
               value={cycles}
               onChange={handleCycleChange}
-            />
-          </div>
-        </fieldset>
-        <button type="submit">Begin</button>
-      </form>
-    </>
+            >
+              <NumberInputField />
+              <NumberInputStepper>
+                <NumberIncrementStepper />
+                <NumberDecrementStepper />
+              </NumberInputStepper>
+            </NumberInput>
+          </FormControl>
+
+          <Button
+            type="submit"
+            colorScheme="blue"
+            size="lg"
+            w={["100%", "auto"]}
+            minW="200px"
+            mt={4}
+          >
+            Begin Exercise
+          </Button>
+        </VStack>
+      </VStack>
+    </Box>
   );
 };
 

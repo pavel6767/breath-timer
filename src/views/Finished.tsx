@@ -1,40 +1,54 @@
-import React, { useContext } from 'react'
-import { useNavigate } from 'react-router-dom'
+import React from "react";
+import {
+  VStack,
+  Text,
+  Button,
+  Code,
+  ButtonGroup,
+  Heading,
+} from "@chakra-ui/react";
 
-import routes from '../config/routes'
-import { initialState, SessionContext } from '../context/Session'
-import { ProgressContext } from '../context/Progress'
-import { formatSecToTime } from '../utils'
+import { useFinished } from "@/hooks/views/useFinished";
+import { formatSecToTime } from "@/utils";
 
 const Finished: React.FC = () => {
-  const navigate = useNavigate()
-  const { session, setSession } = useContext(SessionContext)
-  const { progress } = useContext(ProgressContext);
-  const handleClick = () => {
-    navigate(routes.HOME.path)
-  }
-  
-  const handleTimerClick = () => {
-    if (session.done) setSession({ ...initialState })
-    navigate(routes.TIMER.path)
-  }
+  const {
+    state: { session, progress },
+    callbacks: { handleClick, handleTimerClick },
+  } = useFinished();
+
   return (
-    <div id="finished">
-      {session.done ? "Finished" : "Paused"}
-      <pre>{JSON.stringify(session)}</pre>
-      <p>
-        {progress.progress < progress.total
-          ? `Time Practiced: ${formatSecToTime(progress.progress)};
+    <VStack
+      id="finished"
+      spacing={6}
+      p={6}
+      borderRadius="lg"
+      bg="white"
+      boxShadow="md"
+      align="center"
+    >
+      <Heading size="lg">{session.done ? "Finished" : "Paused"}</Heading>
+
+      <Text fontSize="md">
+        {/* {progress.progress < progress.total
+          ? `Time Practiced: ${formatSecToTime(progress.progress)}
         out of ${formatSecToTime(progress.total)}`
-          : `Finished! ${formatSecToTime(progress.total)}`}
-      </p>
+          : `Finished! ${formatSecToTime(progress.total)}`} */}
+        Time Practiced: {formatSecToTime(progress.progress)} &nbsp;
+        out of {formatSecToTime(progress.total)}
+      </Text>
 
-      <button onClick={handleTimerClick}>
-        {session.done ? "Restart" : "Continue"}
-      </button>
-      <button onClick={handleClick}>Home</button>
-    </div>
+      <ButtonGroup spacing={4}>
+        <Button colorScheme="blue" onClick={handleTimerClick}>
+          {session.done ? "Restart" : "Continue"}
+        </Button>
+
+        <Button variant="outline" onClick={handleClick}>
+          Home
+        </Button>
+      </ButtonGroup>
+    </VStack>
   );
-}
+};
 
-export default Finished
+export default Finished;

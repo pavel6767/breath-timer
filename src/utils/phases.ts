@@ -18,7 +18,7 @@ const phaseLabels: Record<string, IPhaseLabel> = {
     className: "inhale",
   },
   [PHASES.I_HOLD]: {
-    label: "Inhale Hold",
+    label: "Hold",
     className: "inhale-hold",
   },
   [PHASES.EXHALE]: {
@@ -26,7 +26,7 @@ const phaseLabels: Record<string, IPhaseLabel> = {
     className: "exhale",
   },
   [PHASES.E_HOLD]: {
-    label: "Exhale Hold",
+    label: "Rest",
     className: "exhale-hold",
   },
 };
