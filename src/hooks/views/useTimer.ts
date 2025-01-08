@@ -1,11 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import { useContext, useEffect, useRef } from "react";
 
-import routes from "../config/routes";
-import { GoalContext } from "../context/Goal";
-import { SessionContext } from "../context/Session";
+import routes from "@/config/routes";
+import { GoalContext } from "@/context/Goal";
+import { SessionContext } from "@/context/Session";
 
-export const useTimerLogic = () => {
+export const useTimer = () => {
   const navigate = useNavigate();
   const { session, setSession } = useContext(SessionContext);
   const { goal } = useContext(GoalContext);
@@ -14,7 +14,7 @@ export const useTimerLogic = () => {
   const handleClick = (done: boolean) => {
     setSession((state) => ({
       ...state,
-      count: -3,
+      count: 0,
       phaseIndex: 0,
       done: done,
     }));
@@ -24,15 +24,11 @@ export const useTimerLogic = () => {
   useEffect(() => {
     liveRef.current = setInterval(() => {
       setSession((state) => {
-        if (state.cycles === goal.cycles) {
-          liveRef.current && clearInterval(liveRef.current);
-          handleClick(true);
-        }
-
         const newState = { ...state };
         newState.count++;
-        if (newState.count === goal.intervals[newState.phaseIndex]) {
-          newState.count = 0;
+
+        if (newState.count > goal.intervals[newState.phaseIndex]) {
+          newState.count = 1;
           newState.phaseIndex++;
           while (goal.intervals[newState.phaseIndex] === 0) {
             if (newState.phaseIndex >= goal.intervals.length) {
@@ -46,12 +42,28 @@ export const useTimerLogic = () => {
             newState.cycles++;
           }
         }
+
+        if (newState.cycles === goal.cycles) {
+          liveRef.current && clearInterval(liveRef.current);
+          // newState.count =  0;
+          newState.done =  true;
+          handleClick(true);
+        }
         return newState;
       });
     }, 1000);
 
     return () => {
-      if (liveRef.current) clearInterval(liveRef.current);
+      if (liveRef.current) {
+        console.log(":P:: unloading is current", {
+        });
+        setSession((state) => ({
+          ...state,
+          count: 0,
+          phaseIndex: 0,
+        }));
+        clearInterval(liveRef.current);
+      }
     };
   }, []);
 

@@ -1,8 +1,8 @@
 import { useContext } from "react";
-import { GoalContext } from "../context/Goal";
 
+import { GoalContext } from "@/context/Goal";
 
-export const usePhaseSelectionLogic = () => {
+export const usePhaseSelection = () => {
   const {
     goal: { intervals, cycles },
     setGoal,
@@ -12,19 +12,18 @@ export const usePhaseSelectionLogic = () => {
     setGoal((prevGoal) => ({ ...prevGoal, intervals: newGoals }));
   };
 
-  const handlePhaseChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
-    const index = Number(ev.target.dataset.index);
+  const handlePhaseChange = (value: string, index: number) => {
     setGoal((prevGoal) => {
       const newIntervals = [...prevGoal.intervals];
-      newIntervals[index] = Number(ev.target.value);
+      newIntervals[index] = Number(value);
       return { ...prevGoal, intervals: newIntervals };
     });
   };
 
-  const handleCycleChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCycleChange = (cycles: string) => {
     setGoal((state) => ({
       ...state,
-      cycles: Number(ev.target.value),
+      cycles: Number(cycles),
     }));
   };
 

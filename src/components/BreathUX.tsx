@@ -1,18 +1,27 @@
 import React from "react";
 
+import { Box } from "@chakra-ui/react";
+
 import "../styles/timer.css";
-import { useBreathUXLogic } from "../hooks/useBreathUXLogic";
+import { useBreathUX } from "../hooks/components/useBreathUX";
 
-
-const BreathUX: React.FC= () => {
-  const {state: {breathingPhase}} = useBreathUXLogic();
+const BreathUX: React.FC = () => {
+  const {
+    state: { breathingPhase },
+  } = useBreathUX();
 
   return (
-    <div id="animation-max">
-      <div id="animation-min">
-        <div id="animation" className={breathingPhase}></div>
-      </div>
-    </div>
+    <Box id="animation-max">
+      <Box id="animation-min">
+        <Box
+          id="animation"
+          position="absolute"
+          w="100%"
+          h="100%"
+          className={breathingPhase}
+        />
+      </Box>
+    </Box>
   );
 };
 

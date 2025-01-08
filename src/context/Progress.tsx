@@ -35,7 +35,7 @@ export const ProgressProvider: React.FC<IContextProviderProps> = ({
       progress: (session.cycles * cycleLength) + currentProgress,
       total: goal.cycles * cycleLength,
     });
-  }, [goal.intervals, goal.cycles, session.cycles, session.count ]);
+  }, [goal.intervals, goal.cycles, session.cycles, session.count, session.phaseIndex ]);
 
   return (
     <ProgressContext.Provider value={{ progress, setProgress }}>
