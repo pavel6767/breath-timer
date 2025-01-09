@@ -11,3 +11,7 @@
   - React
   - Typescript
 - Backend (coming up)
+
+![home page](image.png)
+![timer](image-1.png)
+![done](image-2.png)
